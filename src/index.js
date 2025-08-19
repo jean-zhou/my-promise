@@ -1,16 +1,22 @@
 const Promise = require('./MyPromise')
 
 const p = new Promise((resolve, reject) => {
-  throw 'error---';
-  // resolve(100);
+  // throw 'error---';
+  resolve(100);
   // reject('失败--');
   // setTimeout(() => {
   //   resolve(100);
   // }, 100)
-}).then((value) => {
-  console.log('then 成功', value);
+}).then(
+  //   (value) => {
+  //   console.log('then 成功', value);
+  // }, (reason) => {
+  //   console.log('then 失败', reason);
+  // }
+).then((value) => {
+  console.log('第二个 then 成功', value);
 }, (reason) => {
-  console.log('then 失败', reason);
+  console.log('第二个 then 失败', reason);
 })
 // console.log('p ---- ', p);
 

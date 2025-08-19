@@ -18,7 +18,9 @@ class Promise {
                 this.status = FULFILLED;
                 this.value = value;
                 this.fulfillCallbacks.forEach((onFulfilled) => {
-                    onFulfilled(this.value)
+                    setTimeout(() => {
+                        onFulfilled(this.value)
+                    }, 0);
                 })
             }
         };
@@ -27,7 +29,9 @@ class Promise {
                 this.status = REJECTED;
                 this.reason = reason;
                 this.rejectCallbacks.forEach((onRejected) => {
-                    onRejected(this.reason);
+                    setTimeout(() => {
+                        onRejected(this.reason);
+                    }, 0);
                 })
             }
         };
@@ -39,18 +43,17 @@ class Promise {
     }
 
     then(onFulfilled, onRejected) {
-        if (typeof onFulfilled === 'function'
-            && this.status === PENDING
-            && typeof onRejected === 'function'
-        ) {
+        onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : data => data;
+        onRejected = typeof onRejected === 'function' ? onRejected : err => { throw err };
+        if (this.status === PENDING) {
             this.fulfillCallbacks.push(onFulfilled);
             this.rejectCallbacks.push(onRejected);
         }
-        if (typeof onFulfilled === 'function' && this.status === FULFILLED) {
+        if (this.status === FULFILLED) {
             console.log('then onFulfilled status', this.status);
             onFulfilled(this.value);
         }
-        if (typeof onRejected === 'function' && this.status === REJECTED) {
+        if (this.status === REJECTED) {
             console.log('then onRejected status', this.status);
             onRejected(this.reason);
         }
