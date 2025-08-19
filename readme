@@ -1,0 +1,9 @@
+1、进入my-promise-demo,运行 npm install
+
+2、运行promise 测试用例， npm run testXX,
+
+3、打开src/MyPromise.js 文件，按照TTD方法和参考Promise A+规范，实现promise的逻辑。
+
+## 参考资料
+Promises/A+规范: https://promisesaplus.com/
+Promises/A+规范(中文): https://promisesaplus.com.cn/
