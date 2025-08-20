@@ -1,4 +1,5 @@
-const Promise = require('./MyPromise')
+// const Promise = require('./MyPromise')
+const Promise = require('./MyPromise2');
 
 const p = new Promise((resolve, reject) => {
   // throw 'error---';
@@ -10,14 +11,14 @@ const p = new Promise((resolve, reject) => {
 }).then(
   (value) => {
     console.log('then 成功', value);
-    // return p;
-    return new Promise((resolve, reject) => {
-      console.log('第二个 promise');
-      resolve(new Promise((resolve, reject) => {
-        console.log('第三个 promise');
-        resolve(value);
-      }))
-    })
+    return p;
+    // return new Promise((resolve, reject) => {
+    //   console.log('第二个 promise');
+    //   resolve(new Promise((resolve, reject) => {
+    //     console.log('第三个 promise');
+    //     resolve(value);
+    //   }))
+    // })
   }
   , (reason) => {
     console.log('then 失败', reason);

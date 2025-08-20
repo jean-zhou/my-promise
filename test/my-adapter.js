@@ -1,4 +1,5 @@
-const MyPromise = require('../src/MyPromise');
+// const MyPromise = require('../src/MyPromise');
+const MyPromise = require('../src/MyPromise2');
 
 function deferred() {
     const result = {};
