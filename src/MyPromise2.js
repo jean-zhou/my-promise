@@ -22,10 +22,10 @@ class Promise {
     exector(resolve, reject);
   }
   then(onFulfilled, onRejected) {
-    if (this.status === FULFILLED) {
+    if (this.status === FULFILLED && typeof onFulfilled === 'function') {
       onFulfilled();
     }
-    if (this.status === REJECTED) {
+    if (this.status === REJECTED && typeof onRejected === 'function') {
       onRejected();
     }
   }
