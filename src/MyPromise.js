@@ -10,15 +10,20 @@ const resolutionPromise = (promise2, x, resolve, reject) => {
     }
     // 递归的解析，如何判断传进来的时一个 promise，根据规范，promise 要是一个方法或对象
     if (x && (typeof x === 'object' || typeof x === 'function')) {
+        let called = false;
         try {
             let then = x.then;
             if (typeof then === 'function') {
                 // 如果调用 then 是一个 function，还可以继续调
                 // 相当于 x.then，且调用 then 后，又有一个 value 处理函数 和 reason 失败的处理函数 
                 then.call(x, value => {
+                    if (called) return;
+                    called = true;
                     // 如果 then 里面 promise 还嵌套 promise，则递归的处理
-                    resolutionPromise(value, promise2, resolve, reject);
+                    resolutionPromise(promise2, value, resolve, reject);
                 }, reason => {
+                    if (called) return;
+                    called = true;
                     reject(reason);
                 })
             } else {
@@ -26,6 +31,8 @@ const resolutionPromise = (promise2, x, resolve, reject) => {
                 resolve(x);
             }
         } catch (error) {
+            if (called) return;
+            called = true;
             reject(error);
         }
     } else {
@@ -52,9 +59,7 @@ class Promise {
                 //     }, 0);
                 // })
                 // push 的时候已经有 setTimeout了，并且这个就是一个可以执行的函数了
-                this.fulfillCallbacks.forEach(func => {
-                    func();
-                })
+                this.fulfillCallbacks.forEach(func => func())
             }
         };
         const reject = (reason) => {
@@ -66,9 +71,7 @@ class Promise {
                 //         onRejected(this.reason);
                 //     }, 0);
                 // })
-                this.rejectCallbacks.forEach((func) => {
-                    func();
-                })
+                this.rejectCallbacks.forEach(func => func())
             }
         };
         try {
