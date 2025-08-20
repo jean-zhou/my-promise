@@ -8,16 +8,26 @@ const p = new Promise((resolve, reject) => {
   //   resolve(100);
   // }, 100)
 }).then(
-  //   (value) => {
-  //   console.log('then 成功', value);
-  // }, (reason) => {
-  //   console.log('then 失败', reason);
-  // }
-).then((value) => {
-  console.log('第二个 then 成功', value);
-}, (reason) => {
-  console.log('第二个 then 失败', reason);
-})
+  (value) => {
+    console.log('then 成功', value);
+    // return p;
+    return new Promise((resolve, reject) => {
+      console.log('第二个 promise');
+      resolve(new Promise((resolve, reject) => {
+        console.log('第三个 promise');
+        resolve(value);
+      }))
+    })
+  }
+  , (reason) => {
+    console.log('then 失败', reason);
+  }
+)
+// .then((value) => {
+//   console.log('第二个 then 成功', value);
+// }, (reason) => {
+//   console.log('第二个 then 失败', reason);
+// })
 // console.log('p ---- ', p);
 
 const main = async () => {
