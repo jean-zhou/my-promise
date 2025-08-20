@@ -46,10 +46,14 @@ class Promise {
             if (this.status === PENDING) {
                 this.status = FULFILLED;
                 this.value = value;
-                this.fulfillCallbacks.forEach((onFulfilled) => {
-                    setTimeout(() => {
-                        onFulfilled(this.value)
-                    }, 0);
+                // this.fulfillCallbacks.forEach((onFulfilled) => {
+                //     setTimeout(() => {
+                //         onFulfilled(this.value)
+                //     }, 0);
+                // })
+                // push 的时候已经有 setTimeout了，并且这个就是一个可以执行的函数了
+                this.fulfillCallbacks.forEach(func => {
+                    func();
                 })
             }
         };
@@ -57,10 +61,13 @@ class Promise {
             if (this.status === PENDING) {
                 this.status = REJECTED;
                 this.reason = reason;
-                this.rejectCallbacks.forEach((onRejected) => {
-                    setTimeout(() => {
-                        onRejected(this.reason);
-                    }, 0);
+                // this.rejectCallbacks.forEach((onRejected) => {
+                //     setTimeout(() => {
+                //         onRejected(this.reason);
+                //     }, 0);
+                // })
+                this.rejectCallbacks.forEach((func) => {
+                    func();
                 })
             }
         };
